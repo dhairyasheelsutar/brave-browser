@@ -166,8 +166,10 @@ void Uphold::OnFetchBalance(
     return;
   }
 
-  if (response_status_code == net::HTTP_NOT_FOUND) {
-    callback(ledger::Result::LEDGER_ERROR, 0.0);
+  if (response_status_code == net::HTTP_NOT_FOUND ||
+      response_status_code == net::HTTP_FORBIDDEN) {
+    callback(ledger::Result::LEDGER_OK, 0.0);
+    DisconnectWallet();
     return;
   }
 
